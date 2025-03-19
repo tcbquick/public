@@ -1,5 +1,5 @@
 ---
-- name: Ensure Ansible is installed and set up inventory
+- name: Ensure Ansible is installed and set up initial inventory
   hosts: localhost
   become: yes
   tasks:
