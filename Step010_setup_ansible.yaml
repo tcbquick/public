@@ -1,0 +1,42 @@
+---
+- name: Ensure Ansible is installed and set up inventory
+  hosts: localhost
+  become: yes
+  tasks:
+
+    - name: Ensure necessary system packages are installed
+      apt:
+        name:
+          - ansible
+        state: present
+        update_cache: yes
+
+    - name: Verify Ansible installation
+      command: ansible --version
+      register: ansible_version
+
+    - name: Display Ansible version
+      debug:
+        msg: "Ansible is installed: {{ ansible_version.stdout }}"
+
+    - name: Ensure Ansible inventory directory exists
+      file:
+        path: /etc/ansible/inventories
+        state: directory
+        mode: '0755'
+
+    - name: Create initial Ansible inventory file
+      copy:
+        dest: /etc/ansible/inventories/hosts.ini
+        content: |
+          [ansible-controller]
+          Ansible-Con-troller ansible_host=192.168.0.100 ansible_user=ansible
+        mode: '0644'
+
+    - name: Display Inventory File Content
+      command: cat /etc/ansible/inventories/hosts.ini
+      register: inventory_content
+
+    - name: Show Inventory
+      debug:
+        msg: "Inventory Content: {{ inventory_content.stdout }}"
