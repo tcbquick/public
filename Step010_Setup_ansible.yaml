@@ -14,10 +14,18 @@
     - name: Verify Ansible installation
       command: ansible --version
       register: ansible_version
+      ignore_errors: yes  # To capture errors gracefully for debugging
 
-    - name: Display Ansible version
+    - name: Display Ansible version or error
       debug:
-        msg: "Ansible is installed: {{ ansible_version.stdout }}"
+        msg: >
+          {% if ansible_version.stdout is defined %}
+            Ansible version: {{ ansible_version.stdout_lines }}
+          {% elif ansible_version.stderr is defined %}
+            Error: {{ ansible_version.stderr }}
+          {% else %}
+            Command failed with no output.
+          {% endif %}
 
     - name: Ensure Ansible inventory directory exists
       file:
@@ -75,3 +83,4 @@
       debug:
         msg: "{{ ssh_test.stdout | default('SSH connection test failed!') }}"
         
+        msg: "{{ ssh_test.stdout | default('SSH connection
