@@ -47,7 +47,14 @@
 
     - name: Show Inventory
       debug:
-        msg: "Inventory Content: {{ inventory_content.stdout }}"
+        msg: >
+          {% if inventory_content.stdout is defined %}
+            Inventory content: {{ inventory_content.stdout_lines }}
+          {% elif inventory_content.stderr is defined %}
+            Error: {{ inventory_content.stderr }}
+          {% else %}
+            Command failed with no output.
+          {% endif %}
 
     - name: Generate SSH keypair (if not already created)
       command: ssh-keygen -t rsa -b 4096 -f /home/ansible/.ssh/id_rsa -N ''
