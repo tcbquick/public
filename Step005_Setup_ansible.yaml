@@ -1,0 +1,79 @@
+---
+- name: Ensure Ansible is installed and set up initial Directories
+  hosts: localhost
+  become: yes
+  tasks:
+
+    - name: Ensure necessary system packages are installed
+      apt:
+        name:
+          - ansible
+        state: present
+        update_cache: yes
+
+    - name: Verify Ansible installation
+      command: ansible --version
+      register: ansible_version
+      ignore_errors: yes  # To capture errors gracefully for debugging
+
+    - name: Display Ansible version or error
+      debug:
+        msg: >
+          {% if ansible_version.stdout is defined %}
+            Ansible version: {{ ansible_version.stdout_lines }}
+          {% elif ansible_version.stderr is defined %}
+            Error: {{ ansible_version.stderr }}
+          {% else %}
+            Command failed with no output.
+          {% endif %}
+
+    - name: Ensure X marks the spot
+      file:
+        path: /home/ansible/.X
+        state: directory
+        mode: '0755'
+
+
+    - name: Ensure Hole is dug
+      file:
+        path: /home/ansible/.X/.Cache
+        state: directory
+        mode: '0755'
+
+    - name: Ensure Artifacts can be added somewhere
+      file:
+        path: /home/ansible/.X/.Cache/.Artifacts
+        state: directory
+        mode: '0755'
+
+        
+
+    - name: Ensure Ansible inventory directory exists
+      file:
+        path: /home/ansible/Inventories
+        state: directory
+        mode: '0755'
+
+    - name: Create initial Ansible inventory file
+      copy:
+        dest: /home/ansible/Inventories/hosts.ini
+        content: |
+          [ansible-controller]
+          Ansible-Con-troller ansible_host=192.168.0.100 ansible_user=ansible
+        mode: '0644'
+
+    - name: Display Inventory File Content
+      command: cat /home/ansible/inventories/hosts.ini
+      register: inventory_content
+
+    - name: Show Inventory
+      debug:
+        msg: >
+          {% if inventory_content.stdout is defined %}
+            Inventory content: {{ inventory_content.stdout_lines }}
+          {% elif inventory_content.stderr is defined %}
+            Error: {{ inventory_content.stderr }}
+          {% else %}
+            Command failed with no output.
+          {% endif %}
+         
