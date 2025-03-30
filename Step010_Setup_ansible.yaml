@@ -90,7 +90,7 @@
       debug:
          msg: >
            {% if ssh_test.stdout is defined %}
-             Ansible version: {{ ssh_test.stdout_lines | default('SSH connection }}
+             SSH test: {{ ssh_test.stdout_lines | default('SSH connection }}
            {% elif ssh_test.stderr is defined %}
              Error: {{ ssh_test.stderr | default('SSH connection test failed!') }}
            {% else %}
