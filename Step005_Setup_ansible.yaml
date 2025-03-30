@@ -27,6 +27,32 @@
             Command failed with no output.
           {% endif %}
 
+---
+- name: Create nested directories
+  hosts: localhost
+  become: false
+
+  tasks:
+    - name: Create required directory structure
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - /home/ansible/.X
+        - /home/ansible/.X/.Cache
+        - /home/ansible/.X/.Cache/.Artifacts
+        - /home/ansible/.X/.Cache/.Artifacts/roles
+        - /home/ansible/.X/.Cache/.Artifacts/roles/role_model
+        - /home/ansible/.X/.Cache/.Artifacts/roles/role_model/handlers
+        - /home/ansible/.X/.Cache/.Artifacts/roles/role_model/tasks
+        - /home/ansible/.X/.Cache/.Artifacts/roles/role_model/templates
+        - /home/ansible/.X/.Cache/.Artifacts/roles/role_model/vars
+
+
+
+
+
     - name: Ensure X marks the spot
       file:
         path: /home/ansible/.X
