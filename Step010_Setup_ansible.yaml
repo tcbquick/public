@@ -29,13 +29,13 @@
 
     - name: Ensure Ansible inventory directory exists
       file:
-        path: /home/ansible/inventories
+        path: /home/ansible/Inventories
         state: directory
         mode: '0755'
 
     - name: Create initial Ansible inventory file
       copy:
-        dest: /home/ansible/inventories/hosts.ini
+        dest: /home/ansible/Inventories/hosts.ini
         content: |
           [ansible-controller]
           Ansible-Con-troller ansible_host=192.168.0.100 ansible_user=ansible
