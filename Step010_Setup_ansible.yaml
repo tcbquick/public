@@ -88,11 +88,12 @@
 
     - name: Show SSH test result
       debug:
-         msg: >
-           {% if ssh_test.stdout is defined %}
-             SSH test: {{ ssh_test.stdout_lines | default('SSH connection }}
-           {% elif ssh_test.stderr is defined %}
-             Error: {{ ssh_test.stderr | default('SSH connection test failed!') }}
-           {% else %}
-             Command failed with no output.
-           {% endif %}
+        msg: >
+          {% if ssh_test.stdout is defined %}
+            SSH test: {{ ssh_test.stdout_lines | default('SSH connection }}
+          {% elif ssh_test.stderr is defined %}
+            Error: {{ ssh_test.stderr | default('SSH connection test failed!') }}
+          {% else %}
+            Command failed with no output.
+          {% endif %}
+          
