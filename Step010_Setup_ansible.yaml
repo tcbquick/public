@@ -86,7 +86,7 @@
       register: ssh_test
       ignore_errors: yes
 
-     - name: Show SSH test result
+    - name: Show SSH test result
       debug:
          msg: >
            {% if ssh_test.stdout is defined %}
