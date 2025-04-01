@@ -38,6 +38,6 @@ echo "Verified hostname: $(hostname)"
 
 sudo apt update -y && \
 sudo apt install -y software-properties-common && \
-sudo apt install -y ansible && \
+sudo apt install -y ansible ssh-pass && \
 echo "Show asnsible --version" && ansible --version
 echo "Show which library ansible is in" && which ansible
