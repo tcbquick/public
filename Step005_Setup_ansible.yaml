@@ -1,5 +1,5 @@
 ---
-- name: Ensure Ansible is installed and set up initial Directories
+- name: Ensure Ansible is installed and set up initial inventory
   hosts: localhost
   become: yes
   tasks:
@@ -7,6 +7,8 @@
     - name: Ensure necessary system packages are installed
       apt:
         name:
+          - software-properties-common
+          - ssh-pass
           - ansible
         state: present
         update_cache: yes
@@ -27,53 +29,6 @@
             Command failed with no output.
           {% endif %}
 
----
-- name: Create nested directories
-  hosts: localhost
-  become: false
-
-  tasks:
-    - name: Create required directory structure
-      file:
-        path: "{{ item }}"
-        state: directory
-        mode: '0755'
-      loop:
-        - /home/ansible/.X
-        - /home/ansible/.X/.Cache
-        - /home/ansible/.X/.Cache/.Artifacts
-        - /home/ansible/.X/.Cache/.Artifacts/roles
-        - /home/ansible/.X/.Cache/.Artifacts/roles/role_model
-        - /home/ansible/.X/.Cache/.Artifacts/roles/role_model/handlers
-        - /home/ansible/.X/.Cache/.Artifacts/roles/role_model/tasks
-        - /home/ansible/.X/.Cache/.Artifacts/roles/role_model/templates
-        - /home/ansible/.X/.Cache/.Artifacts/roles/role_model/vars
-
-
-
-
-
-    - name: Ensure X marks the spot
-      file:
-        path: /home/ansible/.X
-        state: directory
-        mode: '0755'
-
-
-    - name: Ensure Hole is dug
-      file:
-        path: /home/ansible/.X/.Cache
-        state: directory
-        mode: '0755'
-
-    - name: Ensure Artifacts can be added somewhere
-      file:
-        path: /home/ansible/.X/.Cache/.Artifacts
-        state: directory
-        mode: '0755'
-
-        
-
     - name: Ensure Ansible inventory directory exists
       file:
         path: /home/ansible/Inventories
@@ -85,11 +40,14 @@
         dest: /home/ansible/Inventories/hosts.ini
         content: |
           [ansible-controller]
-          Ansible-Con-troller ansible_host=192.168.0.100 ansible_user=ansible
+          Ansible-Con-troller ansible_host=192.168.0.100
+          ansible_user=ansible
+          ansible_host=Ansible-Con-troller
+          ansible_directory=/home/ansible
         mode: '0644'
 
     - name: Display Inventory File Content
-      command: cat /home/ansible/inventories/hosts.ini
+      command: cat /home/ansible/Inventories/hosts.ini
       register: inventory_content
 
     - name: Show Inventory
@@ -102,4 +60,4 @@
           {% else %}
             Command failed with no output.
           {% endif %}
-         
+
