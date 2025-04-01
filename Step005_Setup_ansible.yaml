@@ -8,7 +8,6 @@
       apt:
         name:
           - software-properties-common
-          - ssh-pass
           - ansible
         state: present
         update_cache: yes
