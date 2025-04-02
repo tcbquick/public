@@ -23,5 +23,12 @@ swarm:
 manager master main 
 worker slave client
 
+### autoOps
+### secOps
+### devOps
+### blackOps
+
+security???
+storage???
 webserver???
 dbserver???
