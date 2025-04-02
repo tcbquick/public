@@ -1,0 +1,17 @@
+- name: Deploy Pi-hole
+  docker_swarm_service:
+    name: "dns-core-pihole"
+    image: pihole/pihole:latest
+    networks:
+      - dns_net
+    constraints:
+      - node.labels.role == dns
+    mounts:
+      - type: volume
+        source: pihole_data
+        target: /etc/pihole
+    env:
+      TZ: "America/New_York"
+      WEBPASSWORD: "{{ pihole_web_password }}"
+    replicas: 1
+    restart_policy: any
