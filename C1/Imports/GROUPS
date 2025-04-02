@@ -1,2 +1,82 @@
-pmgr
-???
+---
+# ansible-playbook ~/Desktop/Ansible-Con-troller/C1_add_users_groups.yml
+
+- hosts: localhost
+  become: true
+  user: root
+  vars:
+#Create following user
+    users:
+    - admin
+    - instructor
+    - student01
+    - student02
+    groups:
+    
+#with group
+    group: training
+  roles:
+    - create-groups
+    - create-user-with-password
+
+
+- hosts: localhost
+  
+  name: add users and groups
+  tasks:
+  - name: add groups
+    group: 
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - c1
+    - rtc
+    - com
+    - gov
+    - edu
+    - docker
+    - ansible
+    - omada
+    - venus
+    - pmgr
+    - imgr
+    - emgr
+    - cmgr
+    - autoops
+    - devops
+    - cntOps
+    - secops
+    - training
+    - students
+    - dod
+    - doe
+    - dos
+    - cia
+    - fbi
+    - usps
+    - pmg
+    - audio
+    - video
+    - cdrom
+    - dialout
+    - sudo
+    - plugdev
+    - games
+    - users
+    - input
+    - render
+    - netdev
+    - pulse-access
+    - gpio
+    - i2c
+    - spi
+    - adm
+    - lpadmin
+    - can
+    - pwrt
+    - conv
+    - info
+    - envi
+    - body
+    - chassis
+    - engine
