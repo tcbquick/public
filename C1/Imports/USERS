@@ -1,2 +1,40 @@
-ansible
-???
+---
+# ansible-playbook ~/Desktop/Ansible-Con-troller/C1_add_users_groups.yml
+
+  - name: add users
+    user:
+      name: "{{ item }}"
+      state: present
+      groups:
+      - training   
+      - students
+    with_items:
+    - control-one
+    - control-uno
+    - control-dos
+    - ansible
+    - arduino
+    - omada
+    - venus
+    - central-intelligence-agency
+    - department-of-defense
+    - department-of-energy
+    - department-of-state    
+    - department-of-homeland-security
+    - department-of-justice
+    - department-of-the-airforce
+    - department-of-the-army
+    - department-of-the-marines
+    - department-of-the-navy
+    - department-of-the-spaceforce
+    - department-of-transportation
+    - department-of the-treasury
+    - department-of-the-interior
+    - federal-bureau-of-investigation
+    - federal-reserve-bank
+    - post-master-general
+    - admin
+    - instructor
+    - student1
+    - student2
+    - chron-o-meter
