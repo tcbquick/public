@@ -1,6 +1,13 @@
 # Role based configuration
 ## roles???
 
+HA-High Availability
+CI-Continuous Intigration
+CD-Continuous Deployment
+ID-Intrusion Detection
+IP-Intrusion Prevention
+....
+
 ### Software Configuration Manement (SCM)
 git
 ### SCM repositories
