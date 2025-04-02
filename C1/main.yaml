@@ -1,0 +1,14 @@
+---
+- name: Main Playbook Using Includes
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Include install tasks (static parse time)
+      import_tasks: C1/Imports/roles/tasks/install_packages.yml
+
+    - name: Include configuration tasks (static parse time)
+      import_tasks: C1/Imports/roles/tasks/configure_service.yml
+
+    - name: Include service start tasks (static parse time)
+      import_tasks: C1/Imports/roles/tasks/start_service.yml
