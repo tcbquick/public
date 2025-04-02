@@ -12,3 +12,19 @@
 
     - name: Include service start tasks (static parse time)
       import_tasks: C1/Imports/roles/tasks/start_service.yml
+
+???
+
+
+- name: Deploy Web Server Role
+  hosts: all
+  become: yes
+  vars:
+    web_server: nginx         # Or apache
+    enable_firewall: true
+
+  roles:
+    - webserver
+
+
+
