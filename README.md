@@ -24,6 +24,28 @@ BeaglePlay with debian:latest
 ### templates
 ### vars
 
+```
+ansible-project/
+├── inventories/
+│   └── hosts.ini
+├── host_vars/
+│   ├── server1.yml
+│   └── server2.yml
+├── roles/
+│   └── webserver/
+│       ├── tasks/
+│       │   └── main.yml
+│       ├── handlers/
+│       │   └── main.yml
+│       ├── templates/
+│       │   └── nginx.conf.j2
+│       └── defaults/
+│           └── main.yml
+└── site.yml
+
+```
+
+
 #Step000_Install_ansible.*
 ## install ansible
 ```
