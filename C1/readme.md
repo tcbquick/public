@@ -3,6 +3,7 @@
 ## group_vars
 ## Imports
 ## Includes
+## Inventory
 ## Tasks
 ## Handlers
 ## Templates
