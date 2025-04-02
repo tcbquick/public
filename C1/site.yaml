@@ -1,0 +1,7 @@
+---
+- name: Configure Webservers using roles
+  hosts: webservers
+  become: true
+
+  roles:
+    - webserver
