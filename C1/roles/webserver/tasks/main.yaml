@@ -1,12 +1,12 @@
 ---
 - name: Include NGINX tasks when nginx is selected
-  include_tasks: install_nginx.yml
+  include_tasks: C1/Includes/install_nginx.yml
   when: web_server == "nginx"
 
 - name: Include Apache tasks when apache is selected
-  include_tasks: install_apache.yml
+  include_tasks: C1/Includes/install_apache.yml
   when: web_server == "apache"
 
 - name: Optionally configure firewall
-  include_tasks: configure_firewall.yml
+  include_tasks: C1/Includes/configure_firewall.yml
   when: enable_firewall | default(false)
