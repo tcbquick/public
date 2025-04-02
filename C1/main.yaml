@@ -26,5 +26,13 @@
   roles:
     - webserver
 
+???
+
+- name: Include a task file for each item
+  include_tasks: "{{ item }}"
+  loop:
+    - install_nginx.yml
+    - configure_firewall.yml
+
 
 
