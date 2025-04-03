@@ -1,6 +1,19 @@
 # public
 public share
 BeaglePlay with debian:latest
+user ansible
+hostname Ansible-Con-troller
+
+#Step000_Install_ansible.*
+## install ansible
+```
+curl -sSL https://raw.githubusercontent.com/tcbquick/public/main/Step000_Install_ansible.sh | bash
+```
+## setup ansible playbook
+```
+curl -sSL https://raw.githubusercontent.com/tcbquick/public/main/Step010_Setup_ansible.sh | bash
+```
+
 
 # Advanced Ansible best practices methods
 ## ansible.cfg
@@ -43,15 +56,4 @@ ansible-project/
 │           └── main.yml
 └── site.yml
 
-```
-
-
-#Step000_Install_ansible.*
-## install ansible
-```
-curl -sSL https://raw.githubusercontent.com/tcbquick/public/main/Step000_Install_ansible.sh | bash
-```
-## setup ansible playbook
-```
-curl -sSL https://raw.githubusercontent.com/tcbquick/public/main/Step010_Setup_ansible.sh | bash
 ```
