@@ -39,10 +39,7 @@
         dest: /home/ansible/Inventories/hosts.ini
         content: |
           [ansible-controller]
-          Ansible-Con-troller ansible_host=192.168.0.100
-          ansible_user=ansible
-          ansible_host=Ansible-Con-troller
-          ansible_directory=/home/ansible
+          Ansible-Con-troller ansible_host=192.168.0.100, ansible_user=ansible, ansible_directory=/home/ansible
         mode: '0644'
 
     - name: Display Inventory File Content
