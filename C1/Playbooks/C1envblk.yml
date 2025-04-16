@@ -42,3 +42,12 @@
     - name: Join array elements into a single comma-separated string
       debug:
         msg: "Combined C1_envblk string: {{ C1_envblk | join(', ') }}"
+
+    - name: Nested vars Example
+      debug:
+        msg: 'ansible facts subfield {{ ansible_facts["eth0"]["ipv4"]["address"] }}'
+
+    - name: Nested vars dot Example
+      debug:
+        msg: "ansible facts subfield using dot {{ ansible_facts.eth0.ipv4.address }}"
+
