@@ -1,0 +1,44 @@
+---
+- name: Example Playbook using Array Variables
+  hosts: localhost
+  gather_facts: true
+
+  vars:
+    ansible_user: "ansible"
+    C1_user: "{{ ansible_user_id }}"
+    C1_group: "sudo"
+    C1_system: "autoops"
+    C1_subsys: "cmgr"
+    C1_type: "config"
+    C1_prgrp: "cold-start"
+    C1_element: "Ansible-Con-troller"        
+    C1_st: "prod"
+    C1_action: "verify"
+
+    # Using array (list) to store multiple variables
+    C1_envblk:
+      - "{{ C1_user }}"
+      - "{{ C1_group }}"
+      - "{{ C1_system }}"
+      - "{{ C1_subsys }}"
+      - "{{ C1_type }}"
+      - "{{ C1_prgrp }}"
+      - "{{ C1_element }}"
+      - "{{ C1_st }}"
+      - "{{ C1_action }}"
+
+  tasks:
+    - name: Display individual variables from array
+      debug:
+        msg: "Variable {{ item }} has value: {{ item_value }}"
+      loop: "{{ ['C1_user', 'C1_group', 'C1_system'] }}"
+      vars:
+        item_value: "{{ lookup('vars', item) }}"
+
+    - name: Display the entire array
+      debug:
+        var: C1_envblk
+
+    - name: Join array elements into a single comma-separated string
+      debug:
+        msg: "Combined C1_envblk string: {{ C1_envblk | join(', ') }}"
