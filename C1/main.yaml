@@ -1,4 +1,50 @@
 ---
+- name: Docker Swarm Deployment Playbook
+  hosts: docker_swarm_nodes
+  become: yes
+  vars:
+    docker_service_state: started
+
+  pre_tasks:
+    - name: Ensure Docker is installed
+      package:
+        name: docker.io
+        state: present
+      register: docker_installation
+
+    - name: Ensure Docker service is enabled and running
+      service:
+        name: docker
+        state: "{{ docker_service_state }}"
+        enabled: true
+      register: docker_service_status
+
+    - name: Verify Docker is reachable
+      command: docker info
+      register: docker_info
+      failed_when: docker_info.rc != 0
+      changed_when: false
+
+    - name: Display Docker environment validation summary
+      debug:
+        msg:
+          - "Docker Installation: {{ 'Changed' if docker_installation.changed else 'Already installed' }}"
+          - "Docker Service Status: {{ docker_service_status.state }}"
+          - "Docker Info Command Output Successful."
+
+  tasks:
+    - name: Deploy Docker Swarm services
+      command: docker stack deploy -c docker-compose.yml my_stack
+      args:
+        chdir: /home/ansible/docker_swarm/deployment
+      register: deploy_result
+
+    - name: Confirm Docker Swarm service deployment
+      debug:
+        msg: "{{ deploy_result.stdout }}"
+
+
+---
 - name: Main Playbook Using Includes
   hosts: all
   become: yes
