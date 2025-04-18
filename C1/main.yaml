@@ -1,3 +1,78 @@
+Great question — **yes**, you **can absolutely `import_tasks` or `include_tasks` inside `pre_tasks`** in your playbooks!
+
+This is super handy when you want to modularize pre-run checks, validations, or setup actions before your main tasks begin.
+
+---
+
+### ✅ Example: Using `import_tasks` in `pre_tasks`
+
+```yaml
+---
+- name: Playbook with Imported Pre-Tasks
+  hosts: all
+  become: yes
+
+  pre_tasks:
+    - name: Import environment validation tasks
+      import_tasks: tasks/precheck_environment.yml
+
+    - name: Import SSH validation tasks
+      import_tasks: tasks/precheck_ssh.yml
+
+  roles:
+    - webserver
+```
+
+---
+
+### ✅ Example: Using `include_tasks` in `pre_tasks` (runtime conditional)
+
+```yaml
+---
+- name: Playbook with Included Pre-Tasks
+  hosts: all
+  become: yes
+  vars:
+    check_environment: true
+
+  pre_tasks:
+    - name: Conditionally include pre-environment checks
+      include_tasks: tasks/precheck_environment.yml
+      when: check_environment
+
+    - name: Include another pre-task at runtime
+      include_tasks: tasks/precheck_network.yml
+```
+
+---
+
+### 🧪 Why `import_tasks` vs `include_tasks` matters here
+
+| Task Type      | Timing     | Can Use `when` | Example Use                          |
+|----------------|------------|----------------|--------------------------------------|
+| `import_tasks` | Parse-time | ❌ (mostly ignored) | Fixed pre-task sequence (always runs) |
+| `include_tasks`| Run-time   | ✅ Yes          | Conditional pre-tasks or loops        |
+
+---
+
+### 📁 Example Task File: `tasks/precheck_environment.yml`
+
+```yaml
+---
+- name: Check free disk space
+  command: df -h /
+  register: disk_usage
+
+- name: Warn if free space is low
+  debug:
+    msg: "Low disk space warning: {{ disk_usage.stdout_lines }}"
+  when: "'/dev/root' in disk_usage.stdout"
+```
+
+---
+
+Let me know if you want this structured for reuse in a role’s `pre_tasks`, or with handler pre-flight checks too.
+
 ---
 - name: Docker Swarm Deployment Playbook
   hosts: docker_swarm_nodes
