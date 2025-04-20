@@ -1,0 +1,8 @@
+- name: Ensure required system packages are installed
+  apt:
+    name:
+      - curl
+      - nano
+      - git
+    state: present
+    update_cache: yes
