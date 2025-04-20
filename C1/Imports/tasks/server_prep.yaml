@@ -1,0 +1,9 @@
+- name: Ensure NTP service is running
+  service:
+    name: ntp
+    state: started
+    enabled: yes
+
+- name: Set timezone to UTC
+  timezone:
+    name: UTC
