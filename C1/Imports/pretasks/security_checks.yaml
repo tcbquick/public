@@ -1,0 +1,10 @@
+- name: Check if UFW firewall is installed
+  command: ufw status
+  register: ufw_status
+  changed_when: false
+  ignore_errors: true
+
+- name: Warn if UFW is inactive
+  debug:
+    msg: "WARNING: UFW firewall is inactive!"
+  when: "'inactive' in ufw_status.stdout"
