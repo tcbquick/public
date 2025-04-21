@@ -21,4 +21,13 @@
 
   roles:
     - cold-start
+    - re-start
+    - warm-start
+    - safe-start
+    - reset-mode
+    - limp-mode
+    - flush-mode
+    - abort-mode
+    - abend-mode
+    
 
