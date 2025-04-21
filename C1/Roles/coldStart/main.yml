@@ -1,4 +1,29 @@
 ---
+- name: Docker Installation and Setup
+  hosts: docker_hosts
+  become: true
+
+  pre_tasks:
+    - name: Import system checks
+      import_tasks: pre_tasks/check_system.yml
+
+    - name: Include prerequisite tasks conditionally
+      include_tasks: pre_tasks/setup_prerequisites.yml
+      when: setup_prereqs | default(true)
+
+  tasks:
+    - name: Import tasks to manage Docker users
+      import_tasks: tasks/docker_users.yml
+
+    - name: Include Docker logging setup conditionally
+      include_tasks: tasks/setup_logging.yml
+      when: setup_logging | default(false)
+
+  roles:
+    - docker
+
+
+---
 - name: Configure Webservers
   hosts: webservers
   become: true
