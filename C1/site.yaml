@@ -1,23 +1,24 @@
 ---
-- name: Configure Webservers
-  hosts: webservers
+- name: Configure Site
+  hosts: all
   become: true
 
   pre_tasks:
-    - name: Import basic environment setup tasks
-      import_tasks: pre_tasks/setup_env.yml
+    - name: Import basic environment setup pretasks
+      import_tasks: pretasks/C1_env_blk.yml
 
-    - name: Include security check tasks (conditionally executed)
-      include_tasks: pre_tasks/security_checks.yml
+    - name: Include basic environment setup pretasks (conditionally executed)
+      include_tasks: pretasks/C1_env_blk.yaml
       when: security_checks_enabled | default(true)
 
   tasks:
     - name: Import common server preparation tasks
-      import_tasks: tasks/server_prep.yml
+      import_tasks: tasks/C1_envblk.yml
 
     - name: Include optional monitoring setup tasks
-      include_tasks: tasks/monitoring.yml
+      include_tasks: tasks/C1_envblk.yaml
       when: monitoring_enabled | default(false)
 
   roles:
-    - webserver
+    - cold-start
+
