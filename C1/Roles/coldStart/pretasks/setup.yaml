@@ -1,0 +1,23 @@
+---
+- name: Configure Webservers
+  hosts: webservers
+  become: true
+
+  pre_tasks:
+    - name: Import basic environment setup tasks
+      import_tasks: pre_tasks/setup_env.yml
+
+    - name: Include security check tasks (conditionally executed)
+      include_tasks: pre_tasks/security_checks.yml
+      when: security_checks_enabled | default(true)
+
+  tasks:
+    - name: Import common server preparation tasks
+      import_tasks: tasks/server_prep.yml
+
+    - name: Include optional monitoring setup tasks
+      include_tasks: tasks/monitoring.yml
+      when: monitoring_enabled | default(false)
+
+  roles:
+    - webserver
