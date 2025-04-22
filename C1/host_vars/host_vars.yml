@@ -1,16 +1,7 @@
 ---
-C1_env_blk:
-C1_site:
-C1_owner:
-C1_user:
-C1_system:
-C1_subsystem:
-C1_type:
-C1_stage:
-C1_prgrp:
-C1_action:
-C1_to:
-C1_from:
-C1_swarm:
-C1_node:
-
+C1_host_vars:
+  C1_ansible_controller: "Ansible-Con-troller"
+  C1_omada_controller: "Omada-Con-troller"
+  C1_venus_controller: "Venus-Con-troller"
+  C1_main_controller: "Main-Con-troller"
+  C1_main_console: "Main-Con-sole"
