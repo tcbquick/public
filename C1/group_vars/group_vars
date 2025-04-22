@@ -1,1 +1,6 @@
-???
+C1envblk:
+  C1site: "Primary Data Center"
+  C1owner: "Infrastructure Team"
+  C1system: "Production"
+  C1user: "prod_admin"
+
