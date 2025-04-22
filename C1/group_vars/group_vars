@@ -1,6 +1,17 @@
-C1envblk:
-  C1site: "Primary Data Center"
-  C1owner: "Infrastructure Team"
-  C1system: "Production"
-  C1user: "prod_admin"
-
+---
+C1_env_blk:
+  C1_license_plate: "FREE"
+  C1_license_state: "FL"
+  C1_owner: "ansible"
+  C1_user: "ansible"
+  C1_site: "PENTAGON"
+  C1_swarm: "y"
+  C1_nodes: "5"
+  C1_system:
+  C1_subsystem:
+  C1_type:
+  C1_stage:
+  C1_prgrp:
+  C1_action:
+  C1_to:
+  C1_from:
