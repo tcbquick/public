@@ -1,4 +1,10 @@
 ---
+C1_device: 
+  C1_device_name: "rpi4"
+
+C1_cron_mail: "department-of-energy@Venus-Con-troller.localdomain"
+
+
 C1_group:
   C1_group_name: "pmgr"
   C1_group_description: "Power Management group"
