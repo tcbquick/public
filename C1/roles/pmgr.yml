@@ -7,4 +7,7 @@ C1_group:
   C1_node: "Rpi02w-01"
   C1_user: "department-of-energy"
   C1_system: "pmgr"
+  C1_subsystem: "pcm"
   C1_prgrp: "doe"
+  C1_type: "rpi4"
+  C1_main_mqtt: "0"
