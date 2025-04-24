@@ -1,0 +1,10 @@
+---
+C1_group:
+  C1_group_name: "pmgr"
+  C1_group_description: "Power Management group"
+  C1_owner: "pmgr"
+  C1_user: "venus"
+  C1_node: "Rpi02w-01"
+  C1_user: "department-of-energy"
+  C1_system: "pmgr"
+  C1_prgrp: "doe"
