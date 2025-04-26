@@ -25,7 +25,7 @@
         value: "{{ groups }}"
 
     # Output settings
-    output_base_dir: "./outputs"
+    output_base_dir: ".Trace_outputs"
     output_session_dir: "{{ output_base_dir }}/magic_vars_{{ ansible_date_time.iso8601_basic }}"
     output_filename: "{{ output_session_dir }}/magic_variables_{{ inventory_hostname }}.json"
     archive_filename: "{{ output_base_dir }}/magic_vars_archive_{{ ansible_date_time.iso8601_basic }}.tar.gz"
