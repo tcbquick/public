@@ -1,1 +1,84 @@
-debug
+---
+- name: Trace, Save, and Archive Ansible Magic Variables
+  hosts: all
+  gather_facts: false
+
+  vars:
+    magic_vars:
+      - name: "inventory_dir"
+        value: "{{ inventory_dir }}"
+      - name: "inventory_file"
+        value: "{{ inventory_file }}"
+      - name: "inventory_hostname"
+        value: "{{ inventory_hostname }}"
+      - name: "inventory_hostname_short"
+        value: "{{ inventory_hostname_short }}"
+      - name: "group_names"
+        value: "{{ group_names }}"
+      - name: "ansible_playbook_python"
+        value: "{{ ansible_playbook_python }}"
+      - name: "playbook_dir"
+        value: "{{ playbook_dir }}"
+      - name: "hostvars"
+        value: "{{ hostvars[inventory_hostname] }}"
+      - name: "groups"
+        value: "{{ groups }}"
+
+    # Output settings
+    output_base_dir: "./outputs"
+    output_session_dir: "{{ output_base_dir }}/magic_vars_{{ ansible_date_time.iso8601_basic }}"
+    output_filename: "{{ output_session_dir }}/magic_variables_{{ inventory_hostname }}.json"
+    archive_filename: "{{ output_base_dir }}/magic_vars_archive_{{ ansible_date_time.iso8601_basic }}.tar.gz"
+
+  pre_tasks:
+    - name: Ensure output session directory exists
+      ansible.builtin.file:
+        path: "{{ output_session_dir }}"
+        state: directory
+        mode: '0755'
+
+  tasks:
+    - name: Display magic variables dynamically
+      debug:
+        msg: "{{ item.name }} = {{ item.value }}"
+      loop: "{{ magic_vars }}"
+
+    - name: Build dictionary of magic variables
+      set_fact:
+        magic_vars_dict: >-
+          {{
+            magic_vars_dict | default({}) | combine({ item.name: item.value })
+          }}
+      loop: "{{ magic_vars }}"
+
+    - name: Save magic variables to file (JSON format)
+      copy:
+        dest: "{{ output_filename }}"
+        content: "{{ magic_vars_dict | to_nice_json }}"
+      when: magic_vars_dict is defined
+
+    - name: Collect generated filenames for archive
+      set_fact:
+        collected_files: "{{ collected_files | default([]) + [ output_filename ] }}"
+
+  post_tasks:
+    - name: Archive all saved files into a single tar.gz
+      archive:
+        path: "{{ collected_files }}"
+        dest: "{{ archive_filename }}"
+        format: gz
+      when: collected_files is defined
+
+    - name: Display final summary report
+      debug:
+        msg: |
+          ⭐ Magic Variables Collection Complete! ⭐
+
+          📂 Output Directory: {{ output_session_dir }}
+          📄 Archive Created: {{ archive_filename }}
+
+          🔹 One JSON file per host saved.
+          🔹 Archive contains all JSONs.
+          🔹 Timestamped for perfect tracking: {{ ansible_date_time.iso8601_basic }}
+          🖖 Live Long and Automate.
+
