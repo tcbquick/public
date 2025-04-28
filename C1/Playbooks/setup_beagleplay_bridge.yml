@@ -1,0 +1,107 @@
+---
+- name: Configure BeaglePlay as Network Bridge
+  hosts: network_bridge
+  become: yes
+
+  vars:
+    wifi_ssid: "Bricker"
+    wifi_psk: "your_wifi_password_here"  # replace securely, consider using ansible-vault
+    wlan_interface: "wlan0"
+    eth_interface: "eth0"
+    lan_ip: "192.168.0.1"
+    lan_netmask: "255.255.255.0"
+    dhcp_range_start: "192.168.0.100"
+    dhcp_range_end: "192.168.0.150"
+    dhcp_router: "{{ lan_ip }}"
+    dns_servers:
+      - "1.1.1.1"
+      - "8.8.8.8"
+
+  tasks:
+
+    - name: Install necessary packages
+      apt:
+        name:
+          - hostapd
+          - dnsmasq
+          - iptables-persistent
+          - netfilter-persistent
+          - wireless-tools
+          - wpasupplicant
+        state: present
+        update_cache: yes
+
+    - name: Ensure WiFi interface is configured with wpa_supplicant
+      template:
+        src: wpa_supplicant.conf.j2
+        dest: "/etc/wpa_supplicant/wpa_supplicant-{{ wlan_interface }}.conf"
+        owner: root
+        group: root
+        mode: '0600'
+      notify: Restart Networking
+
+    - name: Configure static LAN interface eth0
+      copy:
+        dest: /etc/network/interfaces.d/eth0
+        content: |
+          auto {{ eth_interface }}
+          iface {{ eth_interface }} inet static
+              address {{ lan_ip }}
+              netmask {{ lan_netmask }}
+      notify: Restart Networking
+
+    - name: Enable IPv4 forwarding
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        state: present
+        reload: yes
+
+    - name: Configure iptables NAT masquerading
+      iptables:
+        table: nat
+        chain: POSTROUTING
+        out_interface: "{{ wlan_interface }}"
+        jump: MASQUERADE
+        state: present
+      notify: Save iptables
+
+    - name: Allow forwarding of established and related connections
+      iptables:
+        chain: FORWARD
+        in_interface: "{{ wlan_interface }}"
+        match: state
+        ctstate: RELATED,ESTABLISHED
+        jump: ACCEPT
+        state: present
+      notify: Save iptables
+
+    - name: Allow forwarding from LAN to WAN
+      iptables:
+        chain: FORWARD
+        in_interface: "{{ eth_interface }}"
+        out_interface: "{{ wlan_interface }}"
+        jump: ACCEPT
+        state: present
+      notify: Save iptables
+
+    - name: Configure dnsmasq for DHCP on LAN
+      template:
+        src: dnsmasq.conf.j2
+        dest: /etc/dnsmasq.conf
+      notify: Restart dnsmasq
+
+  handlers:
+
+    - name: Restart Networking
+      service:
+        name: networking
+        state: restarted
+
+    - name: Restart dnsmasq
+      service:
+        name: dnsmasq
+        state: restarted
+
+    - name: Save iptables
+      command: netfilter-persistent save
